@@ -10,7 +10,3 @@ class Student < Person
     "¯\(ツ)/¯"
   end
 end
-
-pes = Student.new(1, 10, 'apple', parent_permission: true)
-
-p pes.play_hooky
