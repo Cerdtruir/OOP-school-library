@@ -1,3 +1,5 @@
+require_relative('corrector')
+
 # Person class
 class Person
   def initialize(age:, name: 'Unknown', parent_permission: true)
@@ -5,6 +7,7 @@ class Person
     @name = name
     @age = age
     @parent_permission = parent_permission
+    @corrector = Corrector.new
   end
   attr_reader :id
   attr_accessor :name, :age
@@ -15,9 +18,13 @@ class Person
     false
   end
 
+  def validate_name
+    @name = @corrector.correct_name(@name)
+  end
+
   private
 
   def of_age?
-    return true if age >= 18
+    return true if @age >= 18
   end
 end
