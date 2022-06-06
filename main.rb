@@ -27,3 +27,6 @@ class SchoolLibrary
   end
 
 end
+
+school_library = SchoolLibrary.new
+school_library.main
