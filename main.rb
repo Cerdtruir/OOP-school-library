@@ -30,22 +30,13 @@ class SchoolLibrary
 
   def select_menu(selection)
     case selection
-    when '1'
-      books.each { |book| puts "#{book.title} #{book.author}" }
-    when '2'
-      people.each { |person| puts person.name }
-    when '3'
-      add_person
-    when '4'
-      add_book
-    when '5'
-      add_rental
-    when '6'
-      list_by_person
-    when '7'
-      exit
-    else
-      puts 'Invalid input'
+    when '1' then books.each { |book| puts "#{book.title} #{book.author}" }
+    when '2' then people.each { |person| puts person.name }
+    when '3' then choose_person_type
+    when '4' then add_book
+    when '5' then add_rental
+    when '6' then list_by_person
+    when '7' then exit
     end
     puts ''
     main
