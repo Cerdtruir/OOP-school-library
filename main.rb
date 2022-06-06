@@ -50,6 +50,16 @@ class SchoolLibrary
     puts ''
     main
   end
+
+  def add_book
+    puts "Please type the book's name:"
+    title = gets.chomp
+    puts "Please type the author's name:"
+    author = gets.chomp
+    books << Book.new(title, author)
+    puts 'The book has been successfully added'
+    main
+  end
 end
 
 school_library = SchoolLibrary.new
