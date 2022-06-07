@@ -28,20 +28,25 @@ class SchoolLibrary
 
   private
 
+  # rubocop:disable Metrics/CyclomaticComplexity
   def select_menu(selection)
     case selection
-    when '1' then books.each { |book| puts "#{book.title} #{book.author}" }
-    when '2' then people.each { |person| puts person.name }
-    when '3' then choose_person_type
+    when '1' then books.each { |book| puts "Title: '#{book.title}', Author: #{book.author}" }
+    when '2'
+      people.each do |person|
+        puts "[#{person.class.name}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
+      end
+    when '3' then add_person
     when '4' then add_book
     when '5' then add_rental
     when '6' then list_by_person
     when '7' then exit
     end
-    puts ''
+    puts
     main
   end
 
+  # rubocop:enable Metrics/CyclomaticComplexity
   def add_book
     puts "Please type the book's name:"
     title = gets.chomp
