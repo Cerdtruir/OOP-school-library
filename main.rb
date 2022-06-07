@@ -103,6 +103,13 @@ class SchoolLibrary
     specialization = gets.chomp
     people << Teacher.new(age: age, name: name, specialization: specialization)
   end
+  def invalid_input
+    puts
+    puts 'Invalid input'
+    puts 'Press enter to go to the main menu'
+    gets.chomp
+    main
+  end
 end
 
 school_library = SchoolLibrary.new
