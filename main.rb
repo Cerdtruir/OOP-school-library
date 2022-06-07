@@ -102,6 +102,27 @@ class SchoolLibrary
     specialization = gets.chomp
     people << Teacher.new(age: age, name: name, specialization: specialization)
   end
+
+  def add_rental
+    puts 'Select a person by entering the list number'
+    people.each_with_index do |person, index|
+      puts "#{index}: [#{person.class.name}] Name: #{person.name}, Age: #{person.age}"
+    end
+    person_index = gets.chomp.to_i
+    invalid_input unless person_index.between?(0, people.length - 1)
+    puts 'Select a book by entering the list number'
+    books.each_with_index do |book, index|
+      p index
+      puts "#{index}: Title: #{book.title}, Author: #{book.author}"
+    end
+    book_index = gets.chomp.to_i
+    invalid_input unless person_index.between?(0, books.length - 1)
+    print 'Date of renting: '
+    date = gets.chomp
+    Rental.new(people[person_index], books[book_index], date)
+    puts 'Rental added'
+  end
+
   def invalid_input
     puts
     puts 'Invalid input'
