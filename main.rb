@@ -83,9 +83,9 @@ class SchoolLibrary
     permission = gets.chomp
     case permission.upcase
     when 'Y'
-      p permission = true
+      permission = true
     when 'N'
-      p permission = false
+      permission = false
     else
       puts 'Invalid input'
       main
