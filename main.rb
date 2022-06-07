@@ -57,30 +57,30 @@ class SchoolLibrary
     puts
   end
 
-  def choose_person_type
-    puts 'Please select the type of person you would like to add: '
-    puts '1 - Student'
-    puts '2 - Teacher'
-    person_type = gets.chomp
-    add_person(person_type)
-  end
-
-  def add_person(person_type)
+  def add_person
+    person_type = choose_person_type
     print 'Name: '
     name = gets.chomp
     print 'Age: '
     age = gets.chomp
+    invalid_input unless /\A\d+\z/.match(age)
     case person_type
     when '1'
       add_student(name, age)
     when '2'
       add_teacher(name, age)
-    else
-      puts 'Invalid input'
-      main
     end
     puts
     puts "Successfully added #{name}"
+  end
+
+  def choose_person_type
+    puts 'Please select the type of person you would like to add: '
+    puts '1 - Student'
+    puts '2 - Teacher'
+    person_type = gets.chomp
+    invalid_input if person_type != '1' && person_type != '2'
+    person_type
   end
 
   def add_student(name, age)
@@ -92,8 +92,7 @@ class SchoolLibrary
     when 'N'
       permission = false
     else
-      puts 'Invalid input'
-      main
+      invalid_input
     end
     people << Student.new(age: age, name: name, parent_permission: permission)
   end
