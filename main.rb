@@ -48,13 +48,13 @@ class SchoolLibrary
 
   # rubocop:enable Metrics/CyclomaticComplexity
   def add_book
-    puts "Please type the book's name:"
+    print 'Title: '
     title = gets.chomp
-    puts "Please type the author's name:"
+    print 'Author: '
     author = gets.chomp
     books << Book.new(title, author)
     puts 'The book has been successfully added'
-    main
+    puts
   end
 
   def choose_person_type
