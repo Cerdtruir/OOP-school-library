@@ -123,6 +123,19 @@ class SchoolLibrary
     puts 'Rental added'
   end
 
+  def list_by_person
+    puts 'Select a person by entering the list number'
+    people.each_with_index do |person, index|
+      puts "#{index}: [#{person.class.name}] Name: #{person.name}, Age: #{person.age}"
+    end
+    person_index = gets.chomp.to_i
+    invalid_input unless person_index.between?(0, people.length - 1)
+    puts
+    people[person_index].rentals.each do |rental|
+      puts "Date: #{rental.date}, Book: #{rental.book.title} by #{rental.book.author}"
+    end
+  end
+
   def invalid_input
     puts
     puts 'Invalid input'
