@@ -3,9 +3,12 @@ require_relative 'add_person'
 
 class SchoolLibrary
   def initialize
-    @books = []
     @people = []
+    @books = []
+    @rentals = []
+    add_saved_books
     add_saved_people
+    add_saved_rentals
   end
 
   def main_menu
@@ -59,6 +62,23 @@ class SchoolLibrary
     end
   end
 
+  def add_saved_books
+    return unless File.exist?('books.json')
+
+    JSON.parse(File.read('books.json')).each do |book|
+      @books << Book.new(book['@title'], book['@author'])
+    end
+  end
+
+  def add_saved_rentals
+    return unless File.exist?('rentals.json')
+
+    JSON.parse(File.read('rentals.json')).each do |rental|
+      person_index = @people.find_index { |person| person.name == rental['name'] }
+      book_index = @books.find_index { |book| book.title == rental['book'] }
+      @rentals << Rental.new(@people[person_index], @books[book_index], rental['date'])
+    end
+  end
 end
 
 SchoolLibrary.new.main_menu
