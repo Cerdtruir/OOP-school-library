@@ -1,9 +1,10 @@
-require_relative 'app'
+require_relative 'add_person'
 
 class SchoolLibrary
   def initialize
     @books = []
     @people = []
+    add_saved_people
   end
 
   def main_menu
@@ -23,7 +24,7 @@ class SchoolLibrary
 
   private
 
-  include App
+  include AddPerson
 
   # rubocop:disable Metrics/CyclomaticComplexity
   def select_menu(selection)
@@ -42,6 +43,20 @@ class SchoolLibrary
     main_menu
   end
   # rubocop:enable Metrics/CyclomaticComplexity
+
+  def add_saved_people
+    return unless File.exist?('people.json')
+
+    JSON.parse(File.read('people.json')).each do |person|
+      case person['type']
+      when 'Student'
+        @people << Student.new(age: person['@age'], name: person['@name'], parent_permission: person['@parent_permission'])
+      when 'Teacher'
+        @people << Teacher.new(age: person['@age'], name: person['@name'], specialization: person['@specialization'])
+      end
+    end
+  end
+
 end
 
 SchoolLibrary.new.main_menu

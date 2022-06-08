@@ -15,6 +15,7 @@ module AddPerson
     when '2'
       add_teacher(name, age)
     end
+    save_people
   end
 
   def choose_person_type
@@ -46,4 +47,19 @@ module AddPerson
     @people << Teacher.new(age: age, name: name, specialization: specialization)
   end
 
+  def save_people
+    save_data_array = []
+    @people.each do |person|
+      save_person = {}
+      save_person['type'] = person.class.name
+      person.instance_variables.map do |attribute|
+        save_person[attribute] = person.instance_variable_get(attribute)
+      end
+      person.rentals.instance_variables.map do |attribute|
+        save_person.rentals[attribute] = person.instance_variable_get(attribute)
+      end
+      save_data_array << save_person
+    end
+    File.write('people.json', save_data_array.to_json)
+  end
 end
