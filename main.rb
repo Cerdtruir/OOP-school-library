@@ -1,3 +1,4 @@
+require_relative 'app_functions'
 require_relative 'add_person'
 
 class SchoolLibrary
@@ -24,6 +25,7 @@ class SchoolLibrary
 
   private
 
+  include AppFunctions
   include AddPerson
 
   # rubocop:disable Metrics/CyclomaticComplexity
