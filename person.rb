@@ -11,7 +11,7 @@ class Person
     @rentals = []
   end
   attr_accessor :name, :age
-  attr_reader :id, :rentals
+  attr_reader :id, :rentals, :parent_permission
 
   def can_use_services?
     return true if of_age? || @parent_permission
