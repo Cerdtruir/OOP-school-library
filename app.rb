@@ -108,6 +108,6 @@ module App
     puts 'Invalid input'
     puts 'Press enter to go to the main menu'
     gets.chomp
-    main
+    main_menu
   end
 end
