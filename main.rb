@@ -2,8 +2,7 @@ require_relative 'app'
 
 class SchoolLibrary
   def initialize
-    @books = []
-    @people = []
+    @app = App.new(invalid_input_callback: -> { main_menu })
   end
 
   def main_menu
@@ -23,20 +22,20 @@ class SchoolLibrary
 
   private
 
-  include App
+  attr_reader :app
 
   # rubocop:disable Metrics/CyclomaticComplexity
   def select_menu(selection)
     case selection
-    when '1' then list_books
-    when '2' then list_people
-    when '3' then add_person
-    when '4' then add_book
-    when '5' then add_rental
-    when '6' then list_by_person
+    when '1' then app.list_books
+    when '2' then app.list_people
+    when '3' then app.add_person
+    when '4' then app.add_book
+    when '5' then app.add_rental
+    when '6' then app.list_by_person
     when '7' then exit
     else
-      invalid_input
+      app.invalid_input
     end
     puts
     main_menu

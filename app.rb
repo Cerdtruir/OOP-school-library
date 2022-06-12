@@ -3,7 +3,13 @@ require_relative 'teacher'
 require_relative 'student'
 require_relative 'rental'
 
-module App
+class App
+  def initialize(invalid_input_callback: nil)
+    @books = []
+    @people = []
+    @invalid_input_callback = invalid_input_callback
+  end
+
   def list_books
     @books.each { |book| puts "Title: '#{book.title}', Author: #{book.author}" }
   end
@@ -108,6 +114,6 @@ module App
     puts 'Invalid input'
     puts 'Press enter to go to the main menu'
     gets.chomp
-    main_menu
+    @invalid_input_callback&.call
   end
 end
