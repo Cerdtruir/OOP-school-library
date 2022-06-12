@@ -55,7 +55,8 @@ class SchoolLibrary
     JSON.parse(File.read('people.json')).each do |person|
       case person['type']
       when 'Student'
-        @people << Student.new(age: person['@age'], name: person['@name'], parent_permission: person['@parent_permission'])
+        @people << Student.new(age: person['@age'], name: person['@name'],
+                               parent_permission: person['@parent_permission'])
       when 'Teacher'
         @people << Teacher.new(age: person['@age'], name: person['@name'], specialization: person['@specialization'])
       end
