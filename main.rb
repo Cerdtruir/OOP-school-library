@@ -1,7 +1,7 @@
 require_relative 'app'
 
 def main
-  @app = App.new(invalid_input_callback: -> { main_menu })
+  @app = App.new
 
   Kernel.loop do
     main_menu

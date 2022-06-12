@@ -4,10 +4,9 @@ require_relative 'student'
 require_relative 'rental'
 
 class App
-  def initialize(invalid_input_callback: nil)
+  def initialize
     @books = []
     @people = []
-    @invalid_input_callback = invalid_input_callback
   end
 
   def list_books
@@ -22,6 +21,8 @@ class App
 
   def add_person
     person_type = choose_person_type
+
+    return invalid_input if person_type != '1' && person_type != '2'
 
     print 'Name: '
     name = gets.chomp
@@ -46,11 +47,7 @@ class App
     puts 'Please select the type of person you would like to add: '
     puts '1 - Student'
     puts '2 - Teacher'
-    person_type = gets.chomp
-
-    return invalid_input if person_type != '1' && person_type != '2'
-
-    person_type
+    gets.chomp
   end
 
   def add_student(name, age)
@@ -139,7 +136,5 @@ class App
     puts 'Invalid input'
     puts 'Press enter to go to the main menu'
     gets.chomp
-
-    @invalid_input_callback&.call
   end
 end
