@@ -3,7 +3,12 @@ require_relative 'teacher'
 require_relative 'student'
 require_relative 'rental'
 
-module App
+class App
+  def initialize
+    @books = []
+    @people = []
+  end
+
   def list_books
     @books.each { |book| puts "Title: '#{book.title}', Author: #{book.author}" }
   end

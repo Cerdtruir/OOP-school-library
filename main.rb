@@ -1,12 +1,10 @@
 require_relative 'app'
 
-class SchoolLibrary
-  def initialize
-    @books = []
-    @people = []
-  end
+def main
+  @app = App.new
+  main_menu
+end
 
-# rubocop:disable Metrics/MethodLength
 def main_menu
   puts 'Welcome to the School Library App'
   puts 'Please choose an option by entering one of the following numbers:'
@@ -22,27 +20,22 @@ def main_menu
   select_menu(selection)
 end
 
-  private
-
-  include App
-
-  # rubocop:disable Metrics/CyclomaticComplexity
-  def select_menu(selection)
-    case selection
-    when '1' then list_books
-    when '2' then list_people
-    when '3' then add_person
-    when '4' then add_book
-    when '5' then add_rental
-    when '6' then list_by_person
-    when '7' then exit
-    else
-      invalid_input
-    end
-    puts
-    main_menu
+# rubocop:disable Metrics/CyclomaticComplexity
+def select_menu(selection)
+  case selection
+  when '1' then @app.list_books
+  when '2' then @app.list_people
+  when '3' then @app.add_person
+  when '4' then @app.add_book
+  when '5' then @app.add_rental
+  when '6' then @app.list_by_person
+  when '7' then exit
+  else
+    @app.invalid_input
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
+  puts
+  main_menu
 end
+# rubocop:enable Metrics/CyclomaticComplexity
 
-SchoolLibrary.new.main_menu
+main
