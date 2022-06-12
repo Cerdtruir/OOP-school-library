@@ -4,6 +4,8 @@ require_relative 'student'
 require_relative 'rental'
 
 class App
+  class InvalidInputError < StandardError; end
+
   def initialize
     @books = []
     @people = []
@@ -132,10 +134,6 @@ class App
   end
 
   def invalid_input
-    puts
-    puts 'Invalid input'
-    puts 'Press enter to go to the main menu'
-    gets.chomp
-    main_menu
+    raise InvalidInputError
   end
 end

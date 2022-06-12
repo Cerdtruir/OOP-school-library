@@ -2,7 +2,15 @@ require_relative 'app'
 
 def main
   @app = App.new
-  main_menu
+
+  Kernel.loop do
+    main_menu
+  rescue App::InvalidInputError
+    puts
+    puts 'Invalid input'
+    puts 'Press enter to go to the main menu'
+    gets.chomp
+  end
 end
 
 def main_menu
