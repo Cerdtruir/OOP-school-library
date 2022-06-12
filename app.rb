@@ -4,6 +4,8 @@ require_relative 'student'
 require_relative 'rental'
 
 class App
+  class InvalidInputError < StandardError; end
+
   def initialize
     @books = []
     @people = []
@@ -22,7 +24,7 @@ class App
   def add_person
     person_type = choose_person_type
 
-    return invalid_input if person_type != '1' && person_type != '2'
+    invalid_input if person_type != '1' && person_type != '2'
 
     print 'Name: '
     name = gets.chomp
@@ -30,7 +32,7 @@ class App
     print 'Age: '
     age = gets.chomp
 
-    return invalid_input unless /\A\d+\z/.match(age)
+    invalid_input unless /\A\d+\z/.match(age)
 
     case person_type
     when '1'
@@ -60,7 +62,7 @@ class App
     when 'N'
       permission = false
     else
-      return invalid_input
+      invalid_input
     end
 
     @people << Student.new(age: age, name: name, parent_permission: permission)
@@ -91,7 +93,7 @@ class App
     list_people_with_index
     person_index = gets.chomp.to_i
 
-    return invalid_input unless person_index.between?(0, @people.length - 1)
+    invalid_input unless person_index.between?(0, @people.length - 1)
 
     puts 'Select a book by entering the list number'
     @books.each_with_index do |book, index|
@@ -101,7 +103,7 @@ class App
 
     book_index = gets.chomp.to_i
 
-    return invalid_input unless person_index.between?(0, @books.length - 1)
+    invalid_input unless person_index.between?(0, @books.length - 1)
 
     print 'Date of renting: '
     date = gets.chomp
@@ -116,7 +118,7 @@ class App
     list_people_with_index
     person_index = gets.chomp.to_i
 
-    return invalid_input unless person_index.between?(0, @people.length - 1)
+    invalid_input unless person_index.between?(0, @people.length - 1)
 
     puts
 
@@ -132,9 +134,6 @@ class App
   end
 
   def invalid_input
-    puts
-    puts 'Invalid input'
-    puts 'Press enter to go to the main menu'
-    gets.chomp
+    raise InvalidInputError
   end
 end

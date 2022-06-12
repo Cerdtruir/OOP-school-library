@@ -5,6 +5,11 @@ def main
 
   Kernel.loop do
     main_menu
+  rescue App::InvalidInputError
+    puts
+    puts 'Invalid input'
+    puts 'Press enter to go to the main menu'
+    gets.chomp
   end
 end
 
