@@ -14,10 +14,16 @@ describe Person do
     it 'Does the person have the correct name' do
       expect(person.name).to eq 'name'
     end
-    it 'Does the person have the correct parent  permission' do
+    it 'Does the person have the correct parent permission' do
       expect(person.parent_permission).to eq true
     end
+    it 'Default initialize values work' do
+      person_default = Person.new(age: 0)
+      expect(person_default.name).to eq 'Unknown'
+      expect(person_default.parent_permission).to eq true
+    end
   end
+
   context 'Test methods' do
     it 'Add rental to person' do
       book = Book.new('title', 'author')
@@ -34,6 +40,10 @@ describe Person do
     it 'Test can use services where age old enough' do
       person3 = Person.new(age: 20, name: 'name', parent_permission: false)
       expect(person3.can_use_services?).to eq true
+    end
+    it 'Does validate name work' do
+      person3 = Person.new(age: 20, name: 'nameAFrsdfRrtefdg', parent_permission: false)
+      expect(person3.validate_name).to eq 'Nameafrsdfr'
     end
   end
 end
