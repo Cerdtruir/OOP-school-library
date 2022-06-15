@@ -183,12 +183,7 @@ class App
   def save_rentals
     save_data_array = []
     @rentals.each do |rental|
-      save_rental = {}
-      p rental
-      save_rental['name'] = rental.person.name
-      save_rental['book'] = rental.book.title
-      save_rental['date'] = rental.date
-      save_data_array << save_rental
+      save_data_array << { 'name' => rental.person.name, 'book' => rental.book.title, 'date' => rental.date }
     end
     File.write('rentals.json', save_data_array.to_json)
   end
