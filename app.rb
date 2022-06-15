@@ -22,12 +22,11 @@ class App
     return unless File.exist?('people.json')
 
     JSON.parse(File.read('people.json')).each do |person|
-      case person['type']
+      case person['person_type']
       when 'Student'
-        @people << Student.new(age: person['@age'], name: person['@name'],
-                               parent_permission: person['@parent_permission'])
+        @people << Student.new(age: person['age'], name: person['name'], parent_permission: person['parent_permission'])
       when 'Teacher'
-        @people << Teacher.new(age: person['@age'], name: person['@name'], specialization: person['@specialization'])
+        @people << Teacher.new(age: person['age'], name: person['name'], specialization: person['specialization'])
       end
     end
   end
@@ -119,14 +118,9 @@ class App
   def save_people
     save_data_array = []
     @people.each do |person|
-      save_person = {}
-      save_person['type'] = person.class.name
-      person.instance_variables.map do |attribute|
-        save_person[attribute] = person.instance_variable_get(attribute)
-      end
-      person.rentals.instance_variables.map do |attribute|
-        save_person.rentals[attribute] = person.instance_variable_get(attribute)
-      end
+      save_person = { 'person_type' => person.class.name, 'age' => person.age, 'name' => person.name }
+      save_person['parent_permission'] = person.parent_permission if save_person[:person_type] == 'Student'
+      save_person['specialization'] = person.specialization if save_person[:person_type] == 'Teacher'
       save_data_array << save_person
     end
     File.write('people.json', save_data_array.to_json)
