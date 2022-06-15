@@ -36,7 +36,7 @@ class App
     return unless File.exist?('books.json')
 
     JSON.parse(File.read('books.json')).each do |book|
-      @books << Book.new(book['@title'], book['@author'])
+      @books << Book.new(book['title'], book['author'])
     end
   end
 
@@ -148,11 +148,7 @@ class App
   def save_books
     save_data_array = []
     @books.each do |book|
-      save_book = {}
-      book.instance_variables.map do |attribute|
-        save_book[attribute] = book.instance_variable_get(attribute)
-      end
-      save_data_array << save_book
+      save_data_array << { 'title' => book.title, 'author' => book.author }
     end
     File.write('books.json', save_data_array.to_json)
   end
