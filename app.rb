@@ -1,14 +1,52 @@
-require_relative 'book'
-require_relative 'teacher'
-require_relative 'student'
-require_relative 'rental'
+require 'json'
 
+require_relative 'book'
+require_relative 'rental'
+require_relative 'student'
+require_relative 'teacher'
+
+# rubocop:disable Metrics/ClassLength
 class App
   class InvalidInputError < StandardError; end
 
   def initialize
-    @books = []
     @people = []
+    @books = []
+    @rentals = []
+    add_saved_people
+    add_saved_books
+    add_saved_rentals
+  end
+
+  def add_saved_people
+    return unless File.exist?('people.json')
+
+    JSON.parse(File.read('people.json')).each do |person|
+      case person['person_type']
+      when 'Student'
+        @people << Student.new(age: person['age'], name: person['name'], parent_permission: person['parent_permission'])
+      when 'Teacher'
+        @people << Teacher.new(age: person['age'], name: person['name'], specialization: person['specialization'])
+      end
+    end
+  end
+
+  def add_saved_books
+    return unless File.exist?('books.json')
+
+    JSON.parse(File.read('books.json')).each do |book|
+      @books << Book.new(book['title'], book['author'])
+    end
+  end
+
+  def add_saved_rentals
+    return unless File.exist?('rentals.json')
+
+    JSON.parse(File.read('rentals.json')).each do |rental|
+      person_index = @people.find_index { |person| person.name == rental['name'] }
+      book_index = @books.find_index { |book| book.title == rental['book'] }
+      @rentals << Rental.new(@people[person_index], @books[book_index], rental['date'])
+    end
   end
 
   def list_books
@@ -40,6 +78,8 @@ class App
     when '2'
       add_teacher(name, age)
     end
+
+    save_people
 
     puts
     puts "Successfully added #{name}"
@@ -75,6 +115,17 @@ class App
     @people << Teacher.new(age: age, name: name, specialization: specialization)
   end
 
+  def save_people
+    save_data_array = []
+    @people.each do |person|
+      save_person = { 'person_type' => person.class.name, 'age' => person.age, 'name' => person.name }
+      save_person['parent_permission'] = person.parent_permission if save_person[:person_type] == 'Student'
+      save_person['specialization'] = person.specialization if save_person[:person_type] == 'Teacher'
+      save_data_array << save_person
+    end
+    File.write('people.json', save_data_array.to_json)
+  end
+
   def add_book
     print 'Title: '
     title = gets.chomp
@@ -83,9 +134,17 @@ class App
     author = gets.chomp
 
     @books << Book.new(title, author)
-
+    save_books
     puts 'The book has been successfully added'
     puts
+  end
+
+  def save_books
+    save_data_array = []
+    @books.each do |book|
+      save_data_array << { 'title' => book.title, 'author' => book.author }
+    end
+    File.write('books.json', save_data_array.to_json)
   end
 
   def add_rental
@@ -97,20 +156,26 @@ class App
 
     puts 'Select a book by entering the list number'
     @books.each_with_index do |book, index|
-      p index
       puts "#{index}: Title: #{book.title}, Author: #{book.author}"
     end
 
     book_index = gets.chomp.to_i
 
-    invalid_input unless person_index.between?(0, @books.length - 1)
+    invalid_input unless book_index.between?(0, @books.length - 1)
 
     print 'Date of renting: '
     date = gets.chomp
-
-    Rental.new(@people[person_index], @books[book_index], date)
-
+    @rentals << Rental.new(@people[person_index], @books[book_index], date)
+    save_rentals
     puts 'Rental added'
+  end
+
+  def save_rentals
+    save_data_array = []
+    @rentals.each do |rental|
+      save_data_array << { 'name' => rental.person.name, 'book' => rental.book.title, 'date' => rental.date }
+    end
+    File.write('rentals.json', save_data_array.to_json)
   end
 
   def list_by_person
@@ -137,3 +202,4 @@ class App
     raise InvalidInputError
   end
 end
+# rubocop:enable Metrics/ClassLength
