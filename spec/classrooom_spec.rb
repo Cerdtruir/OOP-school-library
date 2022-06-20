@@ -3,11 +3,15 @@ require_relative('../student')
 
 describe Classroom do
   classroom = Classroom.new('classroom')
-  context 'Make a classroom' do
-    it 'Is the clasroom made correcly?' do
+
+  context 'When making a classroom' do
+    it 'returns the correct label' do
       expect(classroom.label).to eq 'classroom'
     end
-    it 'add_student method works correctly?' do
+  end
+
+  context 'Adding a student to the classroom' do
+    it 'adds the student to the classroom correctly' do
       student = Student.new(age: 0, name: 'name', parent_permission: true)
       classroom.add_student(student)
       expect(classroom.students.last).to eq student
